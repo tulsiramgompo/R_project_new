@@ -35,7 +35,8 @@ mutate(lag_hrs = ifelse(lag_hrs %in% c(99,999),NA,lag_hrs))
   mutate(lag_hrs=ifelse(lag_hrs==999,NA,lag_hrs)) } 
 clean_d_1999<-clean_d_1999 %>%
 filter((lag_hrs < 1) | (lag_hrs == 1 & lag_mins == 0)) %>%
-mutate(agecat = cut(age, breaks= c(0, 25, 44, 64, 98), labels= c("<25 years", "25 to 44 years", "45--64 years", "NA"))) %>%
+mutate(agecat = cut(age, breaks= c(0, 25, 45, 65, 1000), labels= c("<25 years", "25--44 years", "45--64 years", "65 years +"),
+                    include.lowest = TRUE, right = FALSE)) %>%
   select(-age) 
 
 gathered_df<-clean_d_1999 %>%
@@ -97,7 +98,8 @@ if(year<=2008){
   mutate(lag_hrs=ifelse(lag_hrs==999,NA,lag_hrs)) } 
 clean_d_1999<-clean_d_1999 %>%
   filter((lag_hrs < 1) | (lag_hrs == 1 & lag_mins == 0)) %>%
-  mutate(agecat = cut(age, breaks= c(0, 25, 44, 64, 98), labels= c("<25 years", "25 to 44 years", "45--64 years", "NA"))) %>%
+  mutate(agecat = cut(age, breaks= c(0, 25, 45, 65, 1000), labels= c("<25 years", "25--44 years", "45--64 years", "65 years +"),
+                      include.lowest = TRUE, right = FALSE)) %>%
   select(-age) 
 
 gathered_df<-clean_d_1999 %>%
@@ -153,9 +155,9 @@ for(study_year in 1999:2010){
     clean_fars <- rbind(clean_fars, df)
   }
 }
-save(clean_fars, file = "/Users/Tulsigompo/Desktop/R_project_new/data/clean_fars.R")
+save(clean_fars, file = "/Users/Tulsigompo/Desktop/R_project_new/data/clean_fars.RData")
 
-load("/Users/Tulsigompo/Desktop/R_project_new/data/clean_fars.R")
+load("/Users/Tulsigompo/Desktop/R_project_new/data/clean_fars.RData")
 dim(clean_fars)
 length(unique(clean_fars$unique_id))
 summary(clean_fars)
